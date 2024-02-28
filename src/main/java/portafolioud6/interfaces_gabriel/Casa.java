@@ -16,6 +16,18 @@ public class Casa {
         cartas.clear();
         puntos = 0;
     }
+
+    boolean pensar() {
+        int valor1 = puntos + 1;
+        int valor11 = puntos + 11;
+        if ((21 - valor1) < (21 - valor11)) {
+            System.out.println("valer 1 mejor");
+            return true;
+        } else {
+            System.out.println("valer 11 mejor");
+            return false;
+        }
+    }
     public ArrayList<Carta> getCartas() {
         return cartas;
     }

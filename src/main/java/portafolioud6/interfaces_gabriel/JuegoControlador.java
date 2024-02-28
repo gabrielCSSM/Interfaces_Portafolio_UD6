@@ -2,19 +2,13 @@ package portafolioud6.interfaces_gabriel;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class JuegoControlador implements Initializable {
     boolean juegoEmpezado = false;
@@ -96,15 +90,31 @@ public class JuegoControlador implements Initializable {
 
         if (miCarta.isDescubierta() == true) {
             cartasDescubiertas += 1;
-            seAcabaronLasCartas(cartasDescubiertas);
             accionJugador();
         } else {
             miCarta.setDescubierta(true);
-            establecerPuntosJugador(miCarta.getValor());
-            barajaJugador.add(miCarta);
-            mesaJugador.getChildren().add(formatoCarta(miCarta.getImg()));
+
+            if (miCarta.getCarta().equalsIgnoreCase("ace")) {
+                if (pensarJugador()) {
+                    miCarta.setValor(1);
+                } else {
+                    miCarta.setValor(11);
+                }
+                establecerPuntosJugador(miCarta.getValor());
+            } else {
+                establecerPuntosJugador(miCarta.getValor());
+            }
+
+            if (Integer.parseInt(puntosJugador.getText()) >= 21) {
+                mensajeDeVictoria();
+            } else {
+                barajaJugador.add(miCarta);
+                mesaJugador.getChildren().add(formatoCarta(miCarta.getImg()));
+            }
+
         }
     }
+
 
     void accionCasa(boolean oculta) {
 
@@ -112,12 +122,17 @@ public class JuegoControlador implements Initializable {
 
         if (miCarta.isDescubierta() == true) {
             cartasDescubiertas += 1;
-            System.out.println(cartasDescubiertas);
-            seAcabaronLasCartas(cartasDescubiertas);
             accionCasa(oculta);
         } else {
             miCarta.setDescubierta(true);
             establecerPuntosCasa(laCasa.getPuntos());
+            if (miCarta.getCarta().equalsIgnoreCase("ace")) {
+                if (laCasa.pensar()) {
+                    miCarta.setValor(1);
+                } else {
+                    miCarta.setValor(11);
+                }
+            }
             laCasa.cartaObtenida(miCarta);
 
             if (oculta == true) {
@@ -126,18 +141,6 @@ public class JuegoControlador implements Initializable {
                 mesaCasa.getChildren().add(formatoCarta(miCarta.getImg()));
             }
 
-        }
-    }
-
-    //Metodo para controlar que no se vayan de la baraja
-    void seAcabaronLasCartas(int cartas) {
-        if (cartas == 21) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("CARTAS ACABADAS");
-            alert.setHeaderText("Se ha acabado el numero de cartas que ud. puede pedir");
-            alert.setContentText("El juego se reiniciara");
-            alert.showAndWait();
-            comenzar();
         }
     }
 
@@ -203,25 +206,29 @@ public class JuegoControlador implements Initializable {
                     turnos++;
                 }
             }
-            mensajeDeVictoria(Integer.parseInt(puntosJugador.getText()), Integer.parseInt(puntosCasa.getText()));
+            mensajeDeVictoria();
 
         });
     }
 
-    void mensajeDeVictoria(int puntosJugador, int puntosCasa) {
-        if (puntosJugador == puntosCasa) {
+    void mensajeDeVictoria() {
+
+        int jugador = Integer.parseInt(puntosJugador.getText());
+        int maquina = Integer.parseInt(puntosCasa.getText());
+
+        if (jugador == maquina) {
             hacerAlerta("tablas");
-        } else if (puntosJugador == 21) {
+        } else if (jugador == 21) {
             hacerAlerta("Jugador");
-        } else if (puntosCasa == 21) {
+        } else if (maquina == 21) {
             hacerAlerta("Maquina");
-        } else if (puntosJugador > 21) {
+        } else if (jugador > 21) {
             hacerAlerta("Maquina");
-        } else if (puntosCasa > 21) {
+        } else if (maquina > 21) {
             hacerAlerta("Jugador");
         } else {
-            int menorJg = 21 - puntosJugador;
-            int menorCs = 21 - puntosCasa;
+            int menorJg = 21 - jugador;
+            int menorCs = 21 - maquina;
             if (menorJg < menorCs) {
                 hacerAlerta("Jugador");
             } else {
@@ -236,12 +243,12 @@ public class JuegoControlador implements Initializable {
         if (nombre.equalsIgnoreCase("tablas")) {
             alerta.setTitle("Nadie ha ganado");
             alerta.setHeaderText("Fue un empate");
-            alerta.setContentText("Tus puntos: ("+puntosJugador.getText()+"), Puntos de la Maquina: ("+puntosCasa.getText()+")");
+            alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosCasa.getText() + ")");
 
         } else {
             alerta.setTitle(nombre + " ha ganado!");
             alerta.setHeaderText("Felicidades " + nombre + ", por su victoria");
-            alerta.setContentText("Tus puntos: ("+puntosJugador.getText()+"), Puntos de la Maquina: ("+puntosCasa.getText()+")");
+            alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosCasa.getText() + ")");
         }
 
         alerta.setOnCloseRequest(dialogEvent -> {
@@ -251,6 +258,36 @@ public class JuegoControlador implements Initializable {
         });
 
         alerta.showAndWait();
+    }
+
+    boolean pensarJugador() {
+        boolean opcion = false;
+
+        int valor1 = Integer.parseInt(puntosJugador.getText() + 1);
+        int valor11 = Integer.parseInt(puntosJugador.getText() + 11);
+
+        ButtonType btn1 = new ButtonType("1", ButtonBar.ButtonData.OK_DONE);
+        ButtonType btn11 = new ButtonType("11", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle("LE HA SALIDO UN AS");
+        alerta.setHeaderText("Escoge su opcion mas favorable:");
+        alerta.setContentText("1: " + (valor1) + "\n" + "11:" + (valor11));
+        alerta.getButtonTypes().clear();
+        alerta.getButtonTypes().add(0, btn1);
+        alerta.getButtonTypes().add(1, btn11);
+
+        Optional<ButtonType> botonPulsado = alerta.showAndWait();
+
+        if (!botonPulsado.isPresent()) {
+            opcion = true; //Vale 1
+        } else if (botonPulsado.get().equals(ButtonType.OK)) {
+            opcion = true; //Vale 1
+        } else if (botonPulsado.get().equals(ButtonType.CANCEL)) {
+            opcion = false; //Vale 11
+        }
+
+        return opcion;
 
     }
 }
