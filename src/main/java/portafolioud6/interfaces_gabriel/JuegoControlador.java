@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +12,7 @@ import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -164,8 +166,13 @@ public class JuegoControlador implements Initializable {
         });
         establecerPuntosCasa(laCasa.getPuntos()); // Se actualiza la puntuacion
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        puntosCasa.setEditable(false);
+        puntosJugador.setEditable(false);
+
         empezarJuego.setOnAction(actionEvent -> {
             comenzar();
             juegoEmpezado = true;
@@ -196,9 +203,54 @@ public class JuegoControlador implements Initializable {
                     turnos++;
                 }
             }
+            mensajeDeVictoria(Integer.parseInt(puntosJugador.getText()), Integer.parseInt(puntosCasa.getText()));
 
         });
     }
 
+    void mensajeDeVictoria(int puntosJugador, int puntosCasa) {
+        if (puntosJugador == puntosCasa) {
+            hacerAlerta("tablas");
+        } else if (puntosJugador == 21) {
+            hacerAlerta("Jugador");
+        } else if (puntosCasa == 21) {
+            hacerAlerta("Maquina");
+        } else if (puntosJugador > 21) {
+            hacerAlerta("Maquina");
+        } else if (puntosCasa > 21) {
+            hacerAlerta("Jugador");
+        } else {
+            int menorJg = 21 - puntosJugador;
+            int menorCs = 21 - puntosCasa;
+            if (menorJg < menorCs) {
+                hacerAlerta("Jugador");
+            } else {
+                hacerAlerta("Maquina");
+            }
+        }
+    }
 
+    void hacerAlerta(String nombre) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+
+        if (nombre.equalsIgnoreCase("tablas")) {
+            alerta.setTitle("Nadie ha ganado");
+            alerta.setHeaderText("Fue un empate");
+            alerta.setContentText("Tus puntos: ("+puntosJugador.getText()+"), Puntos de la Maquina: ("+puntosCasa.getText()+")");
+
+        } else {
+            alerta.setTitle(nombre + " ha ganado!");
+            alerta.setHeaderText("Felicidades " + nombre + ", por su victoria");
+            alerta.setContentText("Tus puntos: ("+puntosJugador.getText()+"), Puntos de la Maquina: ("+puntosCasa.getText()+")");
+        }
+
+        alerta.setOnCloseRequest(dialogEvent -> {
+            comenzar();
+            juegoEmpezado = true;
+            empezarJuego.setText("Reiniciar el Juego");
+        });
+
+        alerta.showAndWait();
+
+    }
 }
