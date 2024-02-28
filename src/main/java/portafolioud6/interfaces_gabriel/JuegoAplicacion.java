@@ -7,12 +7,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class JuegoAplicacion extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(JuegoAplicacion.class.getResource("vistaTapete.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Black Jack!");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

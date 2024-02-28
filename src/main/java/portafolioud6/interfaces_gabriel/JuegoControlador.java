@@ -14,52 +14,22 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
-
+public class JuegoControlador implements Initializable {
     boolean juegoEmpezado = false;
     Baraja miBaraja = new Baraja();
-
     Casa laCasa = new Casa();
-
     ArrayList<Carta> barajaJugador = new ArrayList<>();
-
     ArrayList<Carta> barajaCasa = laCasa.getCartas();
-
-    int cartasExtra, cartasDescubiertas;
-
+    int cartasExtra = 0;
+    int cartasDescubiertas = 0;
     @FXML
     HBox mesaJugador, mesaCasa;
-
     @FXML
     TextField puntosCasa, puntosJugador;
-
     @FXML
     Button empezarJuego, darCarta, turnoMaquina;
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
-        empezarJuego.setOnMousePressed(actionEvent -> {
-            comenzar();
-            juegoEmpezado = true;
-        });
-
-        darCarta.setOnMousePressed(actionEvent -> {
-            if (juegoEmpezado) {
-                accionJugador();
-            }
-        });
-
-        turnoMaquina.setOnAction(actionEvent -> {
-            for (int i = 0; i < cartasExtra; i++) {
-                accionCasa();
-            }
-        });
-
-    }
-
+    //Metodo para barajar
     void barajar() {
 
         //NO SE REVELO NINGUNA CARTA
@@ -68,8 +38,9 @@ public class HelloController implements Initializable {
         }
 
         //NADIE TIENE PUNTOS
-        puntosJugador.setText("");
-        puntosCasa.setText("");
+        puntosJugador.setText("0");
+        puntosCasa.setText("0");
+        laCasa.reiniciarse();
 
         //NADIE TIENE CARTAS
         barajaJugador.clear();
@@ -83,14 +54,21 @@ public class HelloController implements Initializable {
         mesaJugador.getChildren().clear();
         mesaCasa.getChildren().clear();
 
-        juegoEmpezado = false;
     }
 
+    //Metodo para obtener una Carta
+    Carta obtenerCarta() {
+        Carta miCarta = miBaraja.getBaraja()[obtenerAleatorio()];
+        return miCarta;
+    }
+
+    //Metodo para obtener un Aleatorio
     int obtenerAleatorio() {
         Random r = new Random();
         return r.nextInt(0, 51);
     }
 
+    //Metodo para obtener el formato de la imagen de la Carta
     ImageView formatoCarta(Image img) {
         ImageView miImagen = new ImageView(img);
         miImagen.setFitWidth(90);
@@ -98,6 +76,7 @@ public class HelloController implements Initializable {
         return miImagen;
     }
 
+    //Metodos para establecer las puntuaciones de los jugadores
     void establecerPuntosJugador(int puntos) {
         int puntosAntes = puntosJugador.getText().isEmpty() ? 0 : Integer.parseInt(puntosJugador.getText());
         int nuevosPuntos = puntosAntes + puntos;
@@ -108,82 +87,118 @@ public class HelloController implements Initializable {
         puntosCasa.setText(String.valueOf(puntosDespues));
     }
 
+    //Metodos de las acciones de ambas entidades (Jugador y Maquina (Casa))
     void accionJugador() {
-        System.out.println("Entro");
-        if (juegoEmpezado == true) {
-            System.out.println("Sigo");
-            Carta miCarta = obtenerCarta();
 
-            if (miCarta.isDescubierta() == true) {
-                cartasDescubiertas++;
-                System.out.println(cartasDescubiertas);
-                seAcabaronLasCartas(cartasDescubiertas);
-                accionJugador();
-            } else {
-                miCarta.setDescubierta(true);
-                establecerPuntosJugador(miCarta.getValor());
-                barajaJugador.add(miCarta);
-                mesaJugador.getChildren().add(formatoCarta(miCarta.getImg()));
-                cartasExtra++;
-            }
+        Carta miCarta = obtenerCarta();
+
+        if (miCarta.isDescubierta() == true) {
+            cartasDescubiertas += 1;
+            seAcabaronLasCartas(cartasDescubiertas);
+            accionJugador();
         } else {
-            System.out.println("Salgo");
-            barajaJugador.clear();
-            mesaJugador.getChildren().clear();
+            miCarta.setDescubierta(true);
+            establecerPuntosJugador(miCarta.getValor());
+            barajaJugador.add(miCarta);
+            mesaJugador.getChildren().add(formatoCarta(miCarta.getImg()));
         }
     }
 
+    void accionCasa(boolean oculta) {
 
-    Carta obtenerCarta() {
-        Carta miCarta = miBaraja.getBaraja()[obtenerAleatorio()];
-        return miCarta;
-    }
+        Carta miCarta = obtenerCarta();
 
-    void accionCasa() {
-        System.out.println("Entro");
-        if (juegoEmpezado == true) {
-            System.out.println("Sigo");
-            Carta miCarta = obtenerCarta();
+        if (miCarta.isDescubierta() == true) {
+            cartasDescubiertas += 1;
+            System.out.println(cartasDescubiertas);
+            seAcabaronLasCartas(cartasDescubiertas);
+            accionCasa(oculta);
+        } else {
+            miCarta.setDescubierta(true);
+            establecerPuntosCasa(laCasa.getPuntos());
+            laCasa.cartaObtenida(miCarta);
 
-            if (miCarta.isDescubierta() == true) {
-                cartasDescubiertas++;
-                System.out.println(cartasDescubiertas);
-                seAcabaronLasCartas(cartasDescubiertas);
-                accionJugador();
+            if (oculta == true) {
+                mesaCasa.getChildren().add(formatoCarta(new Image(getClass().getResourceAsStream("baraja/secret_card.png"))));
             } else {
-
-
-
-                miCarta.setDescubierta(true);
-                laCasa.cartaObtenida(miCarta);
-
-                int puntosDespues = laCasa.getPuntos();
-                System.out.println(puntosDespues);
-                establecerPuntosCasa(puntosDespues);
-
                 mesaCasa.getChildren().add(formatoCarta(miCarta.getImg()));
             }
-        } else {
-            System.out.println("Salgo");
-            puntosCasa.setText("0");
-            mesaJugador.getChildren().clear();
+
         }
     }
 
+    //Metodo para controlar que no se vayan de la baraja
     void seAcabaronLasCartas(int cartas) {
-        if (cartas == 52) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("LA BARAJA SE HA ACABADO");
-            alert.setHeaderText("Se acabo la baraja, se reiniciara el juego");
-            alert.onCloseRequestProperty().set(dialogEvent -> {
-                juegoEmpezado = false;
-                comenzar();
-            });
+        if (cartas == 21) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("CARTAS ACABADAS");
+            alert.setHeaderText("Se ha acabado el numero de cartas que ud. puede pedir");
+            alert.setContentText("El juego se reiniciara");
             alert.showAndWait();
+            comenzar();
         }
     }
 
+    //Comenzar un Juego Barajando
     void comenzar() {
         barajar();
+        barajaJugador.clear();
+        mesaJugador.getChildren().clear();
+        mostrarManoInicial();
     }
+
+    void mostrarManoInicial() {
+        //Repartir 2 cartas al jugador
+        accionJugador();
+        accionJugador();
+
+        //Repartir 2 cartas a la maquina
+        accionCasa(false);
+        accionCasa(true);
+    }
+
+    void revelarMano() {
+        mesaCasa.getChildren().clear(); //Se limpia la mesa de la maquina
+        barajaCasa.forEach(carta -> {
+            mesaCasa.getChildren().add(formatoCarta(carta.getImg())); //Se revelan las cartas
+        });
+        establecerPuntosCasa(laCasa.getPuntos()); // Se actualiza la puntuacion
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        empezarJuego.setOnAction(actionEvent -> {
+            comenzar();
+            juegoEmpezado = true;
+            empezarJuego.setText("Reiniciar el Juego");
+        });
+
+        darCarta.setOnAction(actionEvent -> {
+            if (juegoEmpezado == true) {
+                accionJugador();
+                cartasExtra += 1;
+            } else {
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                alerta.setTitle("El Juego no ha sigo EMPEZADO");
+                alerta.setHeaderText("Por favor, inicia el juego");
+                alerta.showAndWait();
+            }
+        });
+
+        turnoMaquina.setOnAction(actionEvent -> {
+            //Se revelan tanto las cartas ocultadas como las puntuaciones de la maquina
+            if (cartasExtra == 0) {
+                revelarMano();
+            } else {
+                revelarMano();
+                int turnos = 0;
+                while (turnos < cartasExtra) {
+                    accionCasa(false);
+                    turnos++;
+                }
+            }
+
+        });
+    }
+
+
 }
