@@ -11,19 +11,21 @@ import java.net.URL;
 import java.util.*;
 
 public class JuegoControlador implements Initializable {
+    int creditos = 10;
     boolean juegoEmpezado = false;
     Baraja miBaraja = new Baraja();
-    Casa laCasa = new Casa();
-    ArrayList<Carta> barajaJugador = new ArrayList<>();
-    ArrayList<Carta> barajaCasa = laCasa.getCartas();
+    Casa maquina = new Casa();
+    Jugador jugador = new Jugador();
+    ArrayList<Carta> barajaJugador = jugador.getCartas();
+    ArrayList<Carta> barajaCasa = maquina.getCartas();
     int cartasExtra = 0;
     int cartasDescubiertas = 0;
     @FXML
     HBox mesaJugador, mesaCasa;
     @FXML
-    TextField puntosCasa, puntosJugador;
+    TextField puntosCasa, puntosJugador, campoCreditos;
     @FXML
-    Button empezarJuego, darCarta, turnoMaquina;
+    Button empezarJuego, darCarta, turnoMaquina, salir;
 
     //Metodo para barajar
     void barajar() {
@@ -36,7 +38,8 @@ public class JuegoControlador implements Initializable {
         //NADIE TIENE PUNTOS
         puntosJugador.setText("0");
         puntosCasa.setText("0");
-        laCasa.reiniciarse();
+        maquina.reiniciarse();
+        jugador.reiniciarse();
 
         //NADIE TIENE CARTAS
         barajaJugador.clear();
@@ -49,6 +52,9 @@ public class JuegoControlador implements Initializable {
         //NADIE TIENE CARTAS EN MESA
         mesaJugador.getChildren().clear();
         mesaCasa.getChildren().clear();
+
+        //CREDITOS RESTANTES
+        campoCreditos.setText(String.valueOf(creditos));
 
     }
 
@@ -74,13 +80,11 @@ public class JuegoControlador implements Initializable {
 
     //Metodos para establecer las puntuaciones de los jugadores
     void establecerPuntosJugador(int puntos) {
-        int puntosAntes = puntosJugador.getText().isEmpty() ? 0 : Integer.parseInt(puntosJugador.getText());
-        int nuevosPuntos = puntosAntes + puntos;
-        puntosJugador.setText(String.valueOf(nuevosPuntos));
+        puntosJugador.setText(String.valueOf(puntos));
     }
 
-    void establecerPuntosCasa(int puntosDespues) {
-        puntosCasa.setText(String.valueOf(puntosDespues));
+    void establecerPuntosCasa(int puntos) {
+        puntosCasa.setText(String.valueOf(puntos));
     }
 
     //Metodos de las acciones de ambas entidades (Jugador y Maquina (Casa))
@@ -95,22 +99,17 @@ public class JuegoControlador implements Initializable {
             miCarta.setDescubierta(true);
 
             if (miCarta.getCarta().equalsIgnoreCase("ace")) {
-                if (pensarJugador()) {
+                if (jugador.pensar()) {
                     miCarta.setValor(1);
                 } else {
                     miCarta.setValor(11);
                 }
-                establecerPuntosJugador(miCarta.getValor());
-            } else {
-                establecerPuntosJugador(miCarta.getValor());
             }
 
-            if (Integer.parseInt(puntosJugador.getText()) >= 21) {
-                mensajeDeVictoria();
-            } else {
-                barajaJugador.add(miCarta);
-                mesaJugador.getChildren().add(formatoCarta(miCarta.getImg()));
-            }
+            jugador.cartaObtenida(miCarta);
+            establecerPuntosJugador(jugador.getPuntos());
+
+            mesaJugador.getChildren().add(formatoCarta(miCarta.getImg()));
 
         }
     }
@@ -125,15 +124,17 @@ public class JuegoControlador implements Initializable {
             accionCasa(oculta);
         } else {
             miCarta.setDescubierta(true);
-            establecerPuntosCasa(laCasa.getPuntos());
+            establecerPuntosCasa(maquina.getPuntos());
+
             if (miCarta.getCarta().equalsIgnoreCase("ace")) {
-                if (laCasa.pensar()) {
+                if (maquina.pensar()) {
                     miCarta.setValor(1);
                 } else {
                     miCarta.setValor(11);
                 }
             }
-            laCasa.cartaObtenida(miCarta);
+
+            maquina.cartaObtenida(miCarta);
 
             if (oculta == true) {
                 mesaCasa.getChildren().add(formatoCarta(new Image(getClass().getResourceAsStream("baraja/secret_card.png"))));
@@ -147,8 +148,6 @@ public class JuegoControlador implements Initializable {
     //Comenzar un Juego Barajando
     void comenzar() {
         barajar();
-        barajaJugador.clear();
-        mesaJugador.getChildren().clear();
         mostrarManoInicial();
     }
 
@@ -167,16 +166,18 @@ public class JuegoControlador implements Initializable {
         barajaCasa.forEach(carta -> {
             mesaCasa.getChildren().add(formatoCarta(carta.getImg())); //Se revelan las cartas
         });
-        establecerPuntosCasa(laCasa.getPuntos()); // Se actualiza la puntuacion
+        establecerPuntosCasa(maquina.getPuntos()); // Se actualiza la puntuacion
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         puntosCasa.setEditable(false);
         puntosJugador.setEditable(false);
 
         empezarJuego.setOnAction(actionEvent -> {
+            if (juegoEmpezado == false) {
+                creditos = 10;
+            }
             comenzar();
             juegoEmpezado = true;
             empezarJuego.setText("Reiniciar el Juego");
@@ -208,6 +209,10 @@ public class JuegoControlador implements Initializable {
             }
             mensajeDeVictoria();
 
+        });
+
+        salir.setOnAction(actionEvent -> {
+            System.exit(0);
         });
     }
 
@@ -246,6 +251,11 @@ public class JuegoControlador implements Initializable {
             alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosCasa.getText() + ")");
 
         } else {
+            if (nombre.equalsIgnoreCase("Jugador")) {
+                creditos += 1;
+            } else {
+                creditos -= 1;
+            }
             alerta.setTitle(nombre + " ha ganado!");
             alerta.setHeaderText("Felicidades " + nombre + ", por su victoria");
             alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosCasa.getText() + ")");
@@ -258,36 +268,5 @@ public class JuegoControlador implements Initializable {
         });
 
         alerta.showAndWait();
-    }
-
-    boolean pensarJugador() {
-        boolean opcion = false;
-
-        int valor1 = Integer.parseInt(puntosJugador.getText() + 1);
-        int valor11 = Integer.parseInt(puntosJugador.getText() + 11);
-
-        ButtonType btn1 = new ButtonType("1", ButtonBar.ButtonData.OK_DONE);
-        ButtonType btn11 = new ButtonType("11", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-        alerta.setTitle("LE HA SALIDO UN AS");
-        alerta.setHeaderText("Escoge su opcion mas favorable:");
-        alerta.setContentText("1: " + (valor1) + "\n" + "11:" + (valor11));
-        alerta.getButtonTypes().clear();
-        alerta.getButtonTypes().add(0, btn1);
-        alerta.getButtonTypes().add(1, btn11);
-
-        Optional<ButtonType> botonPulsado = alerta.showAndWait();
-
-        if (!botonPulsado.isPresent()) {
-            opcion = true; //Vale 1
-        } else if (botonPulsado.get().equals(ButtonType.OK)) {
-            opcion = true; //Vale 1
-        } else if (botonPulsado.get().equals(ButtonType.CANCEL)) {
-            opcion = false; //Vale 11
-        }
-
-        return opcion;
-
     }
 }
