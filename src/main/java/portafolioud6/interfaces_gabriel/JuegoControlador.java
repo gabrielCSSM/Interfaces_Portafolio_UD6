@@ -1,11 +1,13 @@
 package portafolioud6.interfaces_gabriel;
 
+import com.example.componentecarta.CartaObjeto;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import com.example.componentecarta.Carta;
 
 import java.net.URL;
 import java.util.*;
@@ -20,7 +22,6 @@ public class JuegoControlador implements Initializable {
     Jugador jugador = new Jugador();
     ArrayList<Carta> barajaJugador = jugador.getCartas();
     ArrayList<Carta> barajaMaquina = maquina.getCartas();
-    int cartasExtra = 0;
     int cartasDescubiertas = 0;
     @FXML
     HBox mesaJugador, mesaMaquina;
@@ -29,12 +30,13 @@ public class JuegoControlador implements Initializable {
     @FXML
     Button empezarJuego, darCarta, turnoMaquina, salir;
 
+
     //Metodo para barajar
     void barajar() {
 
         //NO SE REVELO NINGUNA CARTA
         for (Carta c : miBaraja.getBaraja()) {
-            c.setDescubierta(false);
+            c.devolverCarta().setDescubierta(false);
         }
 
         //NADIE TIENE PUNTOS
@@ -48,7 +50,6 @@ public class JuegoControlador implements Initializable {
         barajaMaquina.clear();
 
         //NO SE SE VIERON LAS CARTAS
-        cartasExtra = 0;
         cartasDescubiertas = 0;
 
         //NADIE TIENE CARTAS EN MESA
@@ -72,14 +73,6 @@ public class JuegoControlador implements Initializable {
         return r.nextInt(0, 51);
     }
 
-    //Metodo para obtener el formato de la imagen de la Carta
-    ImageView formatoCarta(Image img) {
-        ImageView miImagen = new ImageView(img);
-        miImagen.setFitWidth(90);
-        miImagen.setFitHeight(130);
-        return miImagen;
-    }
-
     //Metodos para establecer las puntuaciones de los jugadores
     void establecerPuntosJugador(int puntos) {
         puntosJugador.setText(String.valueOf(puntos));
@@ -94,24 +87,26 @@ public class JuegoControlador implements Initializable {
 
         Carta miCarta = obtenerCarta();
 
-        if (miCarta.isDescubierta() == true) {
+        if (miCarta.devolverCarta().isDescubierta() == true) {
             cartasDescubiertas += 1;
             accionJugador();
         } else {
-            miCarta.setDescubierta(true);
 
-            if (miCarta.getCarta().equalsIgnoreCase("ace")) {
+            miCarta.devolverCarta().setDescubierta(true);
+
+            if (miCarta.devolverCarta().getCarta().equalsIgnoreCase("ace")) {
                 if (jugador.pensar()) {
-                    miCarta.setValor(1);
+                    miCarta.devolverCarta().setValor(1);
                 } else {
-                    miCarta.setValor(11);
+                    miCarta.devolverCarta().setValor(11);
                 }
             }
 
             jugador.cartaObtenida(miCarta);
+
             establecerPuntosJugador(jugador.getPuntos());
 
-            mesaJugador.getChildren().add(formatoCarta(miCarta.getImg()));
+            mesaJugador.getChildren().add(miCarta);
 
         }
     }
@@ -121,31 +116,31 @@ public class JuegoControlador implements Initializable {
 
         Carta miCarta = obtenerCarta();
 
-        if (miCarta.isDescubierta() == true) {
+        if (miCarta.devolverCarta().isDescubierta() == true) {
             cartasDescubiertas += 1;
             accionMaquina(oculta);
         } else {
-            miCarta.setDescubierta(true);
+
+            miCarta.devolverCarta().setDescubierta(true);
 
             establecerPuntosMaquina(maquina.getPuntos());
 
-            if (miCarta.getCarta().equalsIgnoreCase("ace")) {
+            if (miCarta.devolverCarta().getCarta().equalsIgnoreCase("ace")) {
                 if (maquina.pensar()) {
-                    miCarta.setValor(1);
+                    miCarta.devolverCarta().setValor(1);
                 } else {
-                    miCarta.setValor(11);
+                    miCarta.devolverCarta().setValor(11);
                 }
             }
 
             maquina.cartaObtenida(miCarta);
 
             if (oculta == true) {
-                mesaMaquina.getChildren().add(formatoCarta(new Image(getClass().getResourceAsStream("baraja/secret_card.png"))));
+                miCarta.cambiarEstado(false);
+                mesaMaquina.getChildren().add(miCarta);
             } else {
-                mesaMaquina.getChildren().add(formatoCarta(miCarta.getImg()));
+                mesaMaquina.getChildren().add(miCarta);
             }
-
-            establecerPuntosMaquina(maquina.getPuntos());
         }
     }
 
@@ -171,10 +166,14 @@ public class JuegoControlador implements Initializable {
 
     //Metodo para revelar la carta oculta de la maquina
     void revelarMano() {
+
         mesaMaquina.getChildren().clear(); //Se limpia la mesa de la maquina
+
         barajaMaquina.forEach(carta -> {
-            mesaMaquina.getChildren().add(formatoCarta(carta.getImg())); //Se revelan las cartas
+            carta.cambiarEstado(true);
+            mesaMaquina.getChildren().add(carta); //Se revelan las cartas
         });
+        System.out.println("llego");
         establecerPuntosMaquina(maquina.getPuntos()); // Se actualiza la puntuacion
     }
 
@@ -207,6 +206,7 @@ public class JuegoControlador implements Initializable {
 
     //Metodo para hacer el "pop-up"
     void hacerAlerta(String nombre) {
+
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
         if (nombre.equalsIgnoreCase("creditos")) {
@@ -233,7 +233,6 @@ public class JuegoControlador implements Initializable {
 
         alerta.setOnCloseRequest(dialogEvent -> {
             comenzar();
-            juegoEmpezado = true;
             empezarJuego.setText("Reiniciar el Juego");
         });
 
@@ -249,56 +248,18 @@ public class JuegoControlador implements Initializable {
 
     //Metodo para comprobar la mano inicial
     void esBlackJack() {
-
-        boolean contieneFigura = false;
-        boolean contieneAs = false;
-
-        Carta[] ases = {
-                new Carta("spades", "ace"),
-                new Carta("hearts", "ace"),
-                new Carta("clubs", "ace"),
-                new Carta("diamonds", "ace")};
-
-        Carta[] figuras = {
-                new Carta("spades", "jack"),
-                new Carta("hearts", "jack"),
-                new Carta("clubs", "jack"),
-                new Carta("diamonds", "jack"),
-
-                new Carta("spades", "queen"),
-                new Carta("hearts", "queen"),
-                new Carta("clubs", "queen"),
-                new Carta("diamonds", "queen"),
-
-                new Carta("spades", "king"),
-                new Carta("hearts", "king"),
-                new Carta("clubs", "king"),
-                new Carta("diamonds", "king")};
-
-        for (int i = 0; i < ases.length; i++) {
-            if (barajaJugador.contains(ases[i])) {
-                contieneAs = true;
-            }
-        }
-
-        for (int i = 0; i < figuras.length; i++) {
-            if (barajaJugador.contains(figuras[i])) {
-                contieneFigura = true;
-            }
-        }
-
-        if (contieneAs && contieneFigura || Integer.parseInt(puntosJugador.getText()) == 21) {
+        if (jugador.getPuntos() == 21) {
             hacerAlerta("Jugador");
         }
-
     }
 
     //Metodo para comprobar que la maquina robe hasta un valor de cartas minimo de 17
     boolean comprobar17(int suma) {
+
         for (Carta c : maquina.getCartas()) {
-            suma += c.getValor();
+            suma += c.devolverCarta().getValor();
         }
-        System.out.println(suma);
+
         if (suma >= 17) {
             return true;
         } else {
@@ -317,7 +278,9 @@ public class JuegoControlador implements Initializable {
             if (juegoEmpezado == false) {
                 creditos = 10;
             }
+
             comenzar();
+
             juegoEmpezado = true;
 
             if (juegoEmpezado) {
@@ -328,7 +291,6 @@ public class JuegoControlador implements Initializable {
         darCarta.setOnAction(actionEvent -> {
             if (juegoEmpezado == true) {
                 accionJugador();
-                cartasExtra += 1;
             } else {
                 Alert alerta = new Alert(Alert.AlertType.INFORMATION);
                 alerta.setTitle("El Juego no ha sigo EMPEZADO");
@@ -339,32 +301,22 @@ public class JuegoControlador implements Initializable {
 
         turnoMaquina.setOnAction(actionEvent -> {
             //Se revelan tanto las cartas ocultadas como las puntuaciones de la maquina
-            if (cartasExtra == 0) {
-                int suma = 0;
-                revelarMano();
+            int suma = 0;
 
-                while (!comprobar17(suma)) {
-                    accionMaquina(false);
-                }
-                mensajeDeVictoria();
-
-            } else {
-                revelarMano();
-                int turnos = 0;
-                while (turnos < cartasExtra) {
-                    accionMaquina(false);
-                    turnos++;
-                }
-                mensajeDeVictoria();
+            while (!comprobar17(suma)) {
+                accionMaquina(false);
             }
-
+            revelarMano();
+            mensajeDeVictoria();
 
         });
 
         salir.setOnAction(actionEvent -> {
+
+            creditos = 10;
+            campoCreditos.setText("10");
             barajar();
             juegoEmpezado = false;
-            creditos = 10;
             empezarJuego.setText("Empezar");
 
         });

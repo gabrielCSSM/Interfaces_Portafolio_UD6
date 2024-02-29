@@ -1,5 +1,5 @@
 package portafolioud6.interfaces_gabriel;
-
+import com.example.componentecarta.Carta;
 import java.util.ArrayList;
 
 public class Maquina {
@@ -8,7 +8,8 @@ public class Maquina {
 
     void cartaObtenida(Carta carta) {
         cartas.add(carta);
-        puntos += carta.getValor();
+        puntos += carta.devolverCarta().getValor();
+        System.out.println(puntos + " = maquina");
     }
 
     void reiniciarse() {
@@ -20,10 +21,8 @@ public class Maquina {
         int valor1 = puntos + 1;
         int valor11 = puntos + 11;
         if ((21 - valor1) < (21 - valor11)) {
-            System.out.println("valer 1 mejor");
             return true;
         } else {
-            System.out.println("valer 11 mejor");
             return false;
         }
     }

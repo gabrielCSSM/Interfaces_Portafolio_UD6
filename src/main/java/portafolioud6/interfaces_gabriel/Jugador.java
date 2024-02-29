@@ -3,7 +3,7 @@ package portafolioud6.interfaces_gabriel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-
+import com.example.componentecarta.Carta;
 import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
 import java.util.Optional;
@@ -14,7 +14,9 @@ public class Jugador {
 
     void cartaObtenida(Carta carta) {
         cartas.add(carta);
-        puntos += carta.getValor();
+        puntos += carta.devolverCarta().getValor();
+        System.out.println(puntos+" = jugador");
+
     }
 
     void reiniciarse() {
@@ -43,14 +45,11 @@ public class Jugador {
         alerta.getButtonTypes().add(1, btn11);
 
         Optional<ButtonType> botonPulsado = alerta.showAndWait();
-        System.out.println("ENTRO A BOTONES");
 
         if (botonPulsado.isPresent()) {
             if (botonPulsado.get().equals(btn1)) {
-                System.out.println("pULSE EL BTON 1");
                 opcion = true; //Vale 1
             } else {
-                System.out.println("pULSE EL BTON 2");
                 opcion = false; //Vale 11
             }
         }
@@ -66,16 +65,8 @@ public class Jugador {
         return cartas;
     }
 
-    public void setCartas(ArrayList<Carta> cartas) {
-        this.cartas = cartas;
-    }
-
     public int getPuntos() {
         return puntos;
-    }
-
-    public void setPuntos(int puntos) {
-        this.puntos = puntos;
     }
 }
 
