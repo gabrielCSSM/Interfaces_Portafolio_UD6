@@ -5,6 +5,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.Optional;
 
 public class Jugador {
@@ -28,8 +29,8 @@ public class Jugador {
         int valor1 = puntos + 1;
         int valor11 = puntos + 11;
 
-        ButtonType btn1 = new ButtonType("1", ButtonBar.ButtonData.OK_DONE);
-        ButtonType btn11 = new ButtonType("11", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType btn1 = new ButtonType("1", ButtonBar.ButtonData.YES);
+        ButtonType btn11 = new ButtonType("11", ButtonBar.ButtonData.NO);
 
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
@@ -42,14 +43,21 @@ public class Jugador {
         alerta.getButtonTypes().add(1, btn11);
 
         Optional<ButtonType> botonPulsado = alerta.showAndWait();
+        System.out.println("ENTRO A BOTONES");
 
-        if (!botonPulsado.isPresent()) {
-            opcion = true; //Vale 1
-        } else if (botonPulsado.get().equals(ButtonType.OK)) {
-            opcion = true; //Vale 1
-        } else if (botonPulsado.get().equals(ButtonType.CANCEL)) {
-            opcion = false; //Vale 11
+        if (botonPulsado.isPresent()) {
+            if (botonPulsado.get().equals(btn1)) {
+                System.out.println("pULSE EL BTON 1");
+                opcion = true; //Vale 1
+            } else {
+                System.out.println("pULSE EL BTON 2");
+                opcion = false; //Vale 11
+            }
         }
+
+        alerta.setOnCloseRequest(dialogEvent -> {
+            System.out.println("no pulse");
+        });
 
         return opcion;
     }
@@ -61,6 +69,7 @@ public class Jugador {
     public void setCartas(ArrayList<Carta> cartas) {
         this.cartas = cartas;
     }
+
     public int getPuntos() {
         return puntos;
     }

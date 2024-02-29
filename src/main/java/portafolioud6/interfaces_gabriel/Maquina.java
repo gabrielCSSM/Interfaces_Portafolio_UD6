@@ -1,9 +1,8 @@
 package portafolioud6.interfaces_gabriel;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-public class Casa {
+public class Maquina {
     private ArrayList<Carta> cartas = new ArrayList<>();
     private int puntos = 0;
 

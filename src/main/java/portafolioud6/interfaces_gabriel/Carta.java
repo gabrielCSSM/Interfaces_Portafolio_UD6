@@ -3,16 +3,11 @@ package portafolioud6.interfaces_gabriel;
 import javafx.scene.image.Image;
 
 public class Carta {
-
     private int valor;
     private Image img;
-
     private String formatoImagen;
-
     private String palo;
     private String carta;
-
-
     private boolean descubierta;
 
     public Carta(String palo, String carta) {
@@ -26,7 +21,6 @@ public class Carta {
         }
 
     }
-
     public int getValor() {
         return valor;
     }

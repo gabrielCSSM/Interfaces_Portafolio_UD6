@@ -11,19 +11,21 @@ import java.net.URL;
 import java.util.*;
 
 public class JuegoControlador implements Initializable {
+
+    //Declaracion de Variables
     int creditos = 10;
     boolean juegoEmpezado = false;
     Baraja miBaraja = new Baraja();
-    Casa maquina = new Casa();
+    Maquina maquina = new Maquina();
     Jugador jugador = new Jugador();
     ArrayList<Carta> barajaJugador = jugador.getCartas();
-    ArrayList<Carta> barajaCasa = maquina.getCartas();
+    ArrayList<Carta> barajaMaquina = maquina.getCartas();
     int cartasExtra = 0;
     int cartasDescubiertas = 0;
     @FXML
-    HBox mesaJugador, mesaCasa;
+    HBox mesaJugador, mesaMaquina;
     @FXML
-    TextField puntosCasa, puntosJugador, campoCreditos;
+    TextField puntosMaquina, puntosJugador, campoCreditos;
     @FXML
     Button empezarJuego, darCarta, turnoMaquina, salir;
 
@@ -37,13 +39,13 @@ public class JuegoControlador implements Initializable {
 
         //NADIE TIENE PUNTOS
         puntosJugador.setText("0");
-        puntosCasa.setText("0");
+        puntosMaquina.setText("0");
         maquina.reiniciarse();
         jugador.reiniciarse();
 
         //NADIE TIENE CARTAS
         barajaJugador.clear();
-        barajaCasa.clear();
+        barajaMaquina.clear();
 
         //NO SE SE VIERON LAS CARTAS
         cartasExtra = 0;
@@ -51,7 +53,7 @@ public class JuegoControlador implements Initializable {
 
         //NADIE TIENE CARTAS EN MESA
         mesaJugador.getChildren().clear();
-        mesaCasa.getChildren().clear();
+        mesaMaquina.getChildren().clear();
 
         //CREDITOS RESTANTES
         campoCreditos.setText(String.valueOf(creditos));
@@ -83,11 +85,11 @@ public class JuegoControlador implements Initializable {
         puntosJugador.setText(String.valueOf(puntos));
     }
 
-    void establecerPuntosCasa(int puntos) {
-        puntosCasa.setText(String.valueOf(puntos));
+    void establecerPuntosMaquina(int puntos) {
+        puntosMaquina.setText(String.valueOf(puntos));
     }
 
-    //Metodos de las acciones de ambas entidades (Jugador y Maquina (Casa))
+    //Metodos de las acciones de ambas entidades (Jugador y Maquina)
     void accionJugador() {
 
         Carta miCarta = obtenerCarta();
@@ -115,16 +117,17 @@ public class JuegoControlador implements Initializable {
     }
 
 
-    void accionCasa(boolean oculta) {
+    void accionMaquina(boolean oculta) {
 
         Carta miCarta = obtenerCarta();
 
         if (miCarta.isDescubierta() == true) {
             cartasDescubiertas += 1;
-            accionCasa(oculta);
+            accionMaquina(oculta);
         } else {
             miCarta.setDescubierta(true);
-            establecerPuntosCasa(maquina.getPuntos());
+
+            establecerPuntosMaquina(maquina.getPuntos());
 
             if (miCarta.getCarta().equalsIgnoreCase("ace")) {
                 if (maquina.pensar()) {
@@ -137,16 +140,18 @@ public class JuegoControlador implements Initializable {
             maquina.cartaObtenida(miCarta);
 
             if (oculta == true) {
-                mesaCasa.getChildren().add(formatoCarta(new Image(getClass().getResourceAsStream("baraja/secret_card.png"))));
+                mesaMaquina.getChildren().add(formatoCarta(new Image(getClass().getResourceAsStream("baraja/secret_card.png"))));
             } else {
-                mesaCasa.getChildren().add(formatoCarta(miCarta.getImg()));
+                mesaMaquina.getChildren().add(formatoCarta(miCarta.getImg()));
             }
 
+            establecerPuntosMaquina(maquina.getPuntos());
         }
     }
 
     //Comenzar un Juego Barajando
     void comenzar() {
+        sinCreditos();
         barajar();
         mostrarManoInicial();
     }
@@ -157,69 +162,27 @@ public class JuegoControlador implements Initializable {
         accionJugador();
 
         //Repartir 2 cartas a la maquina
-        accionCasa(false);
-        accionCasa(true);
+        accionMaquina(false);
+        accionMaquina(true);
+
+        //Comprobar si la mano del Jugador, tiene las cartas necesarias para ganar al principio
+        esBlackJack();
     }
 
+    //Metodo para revelar la carta oculta de la maquina
     void revelarMano() {
-        mesaCasa.getChildren().clear(); //Se limpia la mesa de la maquina
-        barajaCasa.forEach(carta -> {
-            mesaCasa.getChildren().add(formatoCarta(carta.getImg())); //Se revelan las cartas
+        mesaMaquina.getChildren().clear(); //Se limpia la mesa de la maquina
+        barajaMaquina.forEach(carta -> {
+            mesaMaquina.getChildren().add(formatoCarta(carta.getImg())); //Se revelan las cartas
         });
-        establecerPuntosCasa(maquina.getPuntos()); // Se actualiza la puntuacion
+        establecerPuntosMaquina(maquina.getPuntos()); // Se actualiza la puntuacion
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        puntosCasa.setEditable(false);
-        puntosJugador.setEditable(false);
-
-        empezarJuego.setOnAction(actionEvent -> {
-            if (juegoEmpezado == false) {
-                creditos = 10;
-            }
-            comenzar();
-            juegoEmpezado = true;
-            empezarJuego.setText("Reiniciar el Juego");
-        });
-
-        darCarta.setOnAction(actionEvent -> {
-            if (juegoEmpezado == true) {
-                accionJugador();
-                cartasExtra += 1;
-            } else {
-                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-                alerta.setTitle("El Juego no ha sigo EMPEZADO");
-                alerta.setHeaderText("Por favor, inicia el juego");
-                alerta.showAndWait();
-            }
-        });
-
-        turnoMaquina.setOnAction(actionEvent -> {
-            //Se revelan tanto las cartas ocultadas como las puntuaciones de la maquina
-            if (cartasExtra == 0) {
-                revelarMano();
-            } else {
-                revelarMano();
-                int turnos = 0;
-                while (turnos < cartasExtra) {
-                    accionCasa(false);
-                    turnos++;
-                }
-            }
-            mensajeDeVictoria();
-
-        });
-
-        salir.setOnAction(actionEvent -> {
-            System.exit(0);
-        });
-    }
-
+    //Metodo para hacer el "pop-up" de victoria / derrota / tablas / sin creditos
     void mensajeDeVictoria() {
 
         int jugador = Integer.parseInt(puntosJugador.getText());
-        int maquina = Integer.parseInt(puntosCasa.getText());
+        int maquina = Integer.parseInt(puntosMaquina.getText());
 
         if (jugador == maquina) {
             hacerAlerta("tablas");
@@ -242,13 +205,20 @@ public class JuegoControlador implements Initializable {
         }
     }
 
+    //Metodo para hacer el "pop-up"
     void hacerAlerta(String nombre) {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+
+        if (nombre.equalsIgnoreCase("creditos")) {
+            alerta.setAlertType(Alert.AlertType.WARNING);
+            alerta.setTitle("Se quedo sin creditos");
+            alerta.setHeaderText("No quedan creditos restantes");
+        }
 
         if (nombre.equalsIgnoreCase("tablas")) {
             alerta.setTitle("Nadie ha ganado");
             alerta.setHeaderText("Fue un empate");
-            alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosCasa.getText() + ")");
+            alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosMaquina.getText() + ")");
 
         } else {
             if (nombre.equalsIgnoreCase("Jugador")) {
@@ -258,7 +228,7 @@ public class JuegoControlador implements Initializable {
             }
             alerta.setTitle(nombre + " ha ganado!");
             alerta.setHeaderText("Felicidades " + nombre + ", por su victoria");
-            alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosCasa.getText() + ")");
+            alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosMaquina.getText() + ")");
         }
 
         alerta.setOnCloseRequest(dialogEvent -> {
@@ -268,5 +238,135 @@ public class JuegoControlador implements Initializable {
         });
 
         alerta.showAndWait();
+    }
+
+    //Metodo para comprobar que no tienes creditos
+    void sinCreditos() {
+        if (creditos == 0) {
+            hacerAlerta("creditos");
+        }
+    }
+
+    //Metodo para comprobar la mano inicial
+    void esBlackJack() {
+
+        boolean contieneFigura = false;
+        boolean contieneAs = false;
+
+        Carta[] ases = {
+                new Carta("spades", "ace"),
+                new Carta("hearts", "ace"),
+                new Carta("clubs", "ace"),
+                new Carta("diamonds", "ace")};
+
+        Carta[] figuras = {
+                new Carta("spades", "jack"),
+                new Carta("hearts", "jack"),
+                new Carta("clubs", "jack"),
+                new Carta("diamonds", "jack"),
+
+                new Carta("spades", "queen"),
+                new Carta("hearts", "queen"),
+                new Carta("clubs", "queen"),
+                new Carta("diamonds", "queen"),
+
+                new Carta("spades", "king"),
+                new Carta("hearts", "king"),
+                new Carta("clubs", "king"),
+                new Carta("diamonds", "king")};
+
+        for (int i = 0; i < ases.length; i++) {
+            if (barajaJugador.contains(ases[i])) {
+                contieneAs = true;
+            }
+        }
+
+        for (int i = 0; i < figuras.length; i++) {
+            if (barajaJugador.contains(figuras[i])) {
+                contieneFigura = true;
+            }
+        }
+
+        if (contieneAs && contieneFigura || Integer.parseInt(puntosJugador.getText()) == 21) {
+            hacerAlerta("Jugador");
+        }
+
+    }
+
+    //Metodo para comprobar que la maquina robe hasta un valor de cartas minimo de 17
+    boolean comprobar17(int suma) {
+        for (Carta c : maquina.getCartas()) {
+            suma += c.getValor();
+        }
+        System.out.println(suma);
+        if (suma >= 17) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        puntosMaquina.setEditable(false);
+        puntosJugador.setEditable(false);
+
+        empezarJuego.setOnAction(actionEvent -> {
+
+            if (juegoEmpezado == false) {
+                creditos = 10;
+            }
+            comenzar();
+            juegoEmpezado = true;
+
+            if (juegoEmpezado) {
+                empezarJuego.setText("Reiniciar el Juego");
+            }
+        });
+
+        darCarta.setOnAction(actionEvent -> {
+            if (juegoEmpezado == true) {
+                accionJugador();
+                cartasExtra += 1;
+            } else {
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                alerta.setTitle("El Juego no ha sigo EMPEZADO");
+                alerta.setHeaderText("Por favor, inicia el juego");
+                alerta.showAndWait();
+            }
+        });
+
+        turnoMaquina.setOnAction(actionEvent -> {
+            //Se revelan tanto las cartas ocultadas como las puntuaciones de la maquina
+            if (cartasExtra == 0) {
+                int suma = 0;
+                revelarMano();
+
+                while (!comprobar17(suma)) {
+                    accionMaquina(false);
+                }
+                mensajeDeVictoria();
+
+            } else {
+                revelarMano();
+                int turnos = 0;
+                while (turnos < cartasExtra) {
+                    accionMaquina(false);
+                    turnos++;
+                }
+                mensajeDeVictoria();
+            }
+
+
+        });
+
+        salir.setOnAction(actionEvent -> {
+            barajar();
+            juegoEmpezado = false;
+            creditos = 10;
+            empezarJuego.setText("Empezar");
+
+        });
     }
 }
