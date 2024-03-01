@@ -11,7 +11,7 @@ public class JuegoAplicacion extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(JuegoAplicacion.class.getResource("vistaTapete.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        Scene scene = new Scene(fxmlLoader.load(), 800, 650);
         stage.setTitle("Black Jack!");
         stage.setResizable(false);
         stage.setScene(scene);

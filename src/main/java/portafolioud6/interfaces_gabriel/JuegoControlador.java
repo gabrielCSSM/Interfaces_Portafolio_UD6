@@ -1,11 +1,8 @@
 package portafolioud6.interfaces_gabriel;
 
-import com.example.componentecarta.CartaObjeto;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import com.example.componentecarta.Carta;
 
@@ -26,7 +23,7 @@ public class JuegoControlador implements Initializable {
     @FXML
     HBox mesaJugador, mesaMaquina;
     @FXML
-    TextField puntosMaquina, puntosJugador, campoCreditos;
+    Label campoPuntosMaquina, campoPuntosJugador, campoCreditos;
     @FXML
     Button empezarJuego, darCarta, turnoMaquina, salir;
 
@@ -40,8 +37,8 @@ public class JuegoControlador implements Initializable {
         }
 
         //NADIE TIENE PUNTOS
-        puntosJugador.setText("0");
-        puntosMaquina.setText("0");
+        campoPuntosJugador.setText("0");
+        campoPuntosMaquina.setText("0");
         maquina.reiniciarse();
         jugador.reiniciarse();
 
@@ -75,11 +72,11 @@ public class JuegoControlador implements Initializable {
 
     //Metodos para establecer las puntuaciones de los jugadores
     void establecerPuntosJugador(int puntos) {
-        puntosJugador.setText(String.valueOf(puntos));
+        campoPuntosJugador.setText(String.valueOf(puntos));
     }
 
     void establecerPuntosMaquina(int puntos) {
-        puntosMaquina.setText(String.valueOf(puntos));
+        campoPuntosMaquina.setText(String.valueOf(puntos));
     }
 
     //Metodos de las acciones de ambas entidades (Jugador y Maquina)
@@ -188,8 +185,8 @@ public class JuegoControlador implements Initializable {
     //Metodo para hacer el "pop-up" de victoria / derrota / tablas / sin creditos
     void mensajeDeVictoria() {
 
-        int jugador = Integer.parseInt(puntosJugador.getText());
-        int maquina = Integer.parseInt(puntosMaquina.getText());
+        int jugador = Integer.parseInt(campoPuntosJugador.getText());
+        int maquina = Integer.parseInt(campoPuntosMaquina.getText());
 
         if (jugador == maquina) {
             hacerAlerta("tablas");
@@ -226,7 +223,7 @@ public class JuegoControlador implements Initializable {
         if (nombre.equalsIgnoreCase("tablas")) {
             alerta.setTitle("Nadie ha ganado");
             alerta.setHeaderText("Fue un empate");
-            alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosMaquina.getText() + ")");
+            alerta.setContentText("Tus puntos: (" + campoPuntosJugador.getText() + "), Puntos de la Maquina: (" + campoPuntosMaquina.getText() + ")");
 
         } else {
             if (nombre.equalsIgnoreCase("Jugador")) {
@@ -236,7 +233,7 @@ public class JuegoControlador implements Initializable {
             }
             alerta.setTitle(nombre + " ha ganado!");
             alerta.setHeaderText("Felicidades " + nombre + ", por su victoria");
-            alerta.setContentText("Tus puntos: (" + puntosJugador.getText() + "), Puntos de la Maquina: (" + puntosMaquina.getText() + ")");
+            alerta.setContentText("Tus puntos: (" + campoPuntosJugador.getText() + "), Puntos de la Maquina: (" + campoPuntosMaquina.getText() + ")");
         }
 
         alerta.setOnCloseRequest(dialogEvent -> {
@@ -278,9 +275,6 @@ public class JuegoControlador implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        puntosMaquina.setEditable(false);
-        puntosJugador.setEditable(false);
-
         empezarJuego.setOnAction(actionEvent -> {
 
             if (juegoEmpezado == false) {
@@ -292,7 +286,7 @@ public class JuegoControlador implements Initializable {
             juegoEmpezado = true;
 
             if (juegoEmpezado) {
-                empezarJuego.setText("Reiniciar el Juego");
+                empezarJuego.setText("Reiniciar");
             }
         });
 
