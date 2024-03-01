@@ -108,6 +108,7 @@ public class JuegoControlador implements Initializable {
 
             mesaJugador.getChildren().add(miCarta);
 
+            comprobarPuntos();
         }
     }
 
@@ -162,6 +163,13 @@ public class JuegoControlador implements Initializable {
 
         //Comprobar si la mano del Jugador, tiene las cartas necesarias para ganar al principio
         esBlackJack();
+        comprobarPuntos();
+    }
+
+    void comprobarPuntos() {
+        if (jugador.getPuntos() > 21) {
+            hacerAlerta("Maquina");
+        }
     }
 
     //Metodo para revelar la carta oculta de la maquina
@@ -173,7 +181,7 @@ public class JuegoControlador implements Initializable {
             carta.cambiarEstado(true);
             mesaMaquina.getChildren().add(carta); //Se revelan las cartas
         });
-        System.out.println("llego");
+
         establecerPuntosMaquina(maquina.getPuntos()); // Se actualiza la puntuacion
     }
 
@@ -306,7 +314,9 @@ public class JuegoControlador implements Initializable {
             while (!comprobar17(suma)) {
                 accionMaquina(false);
             }
+
             revelarMano();
+
             mensajeDeVictoria();
 
         });

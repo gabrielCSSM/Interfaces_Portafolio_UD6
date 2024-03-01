@@ -15,8 +15,6 @@ public class Jugador {
     void cartaObtenida(Carta carta) {
         cartas.add(carta);
         puntos += carta.devolverCarta().getValor();
-        System.out.println(puntos+" = jugador");
-
     }
 
     void reiniciarse() {
