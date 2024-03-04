@@ -1,5 +1,6 @@
 module portafolioud6.interfaces_gabriel {
     requires javafx.controls;
+    requires javafx.graphics;
     requires javafx.fxml;
     requires com.example.componentecarta;
 
