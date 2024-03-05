@@ -1,11 +1,19 @@
 package portafolioud6.interfaces_gabriel;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import com.example.componentecarta.Carta;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -25,7 +33,7 @@ public class JuegoControlador implements Initializable {
     @FXML
     Label campoPuntosMaquina, campoPuntosJugador, campoCreditos;
     @FXML
-    Button empezarJuego, darCarta, turnoMaquina, salir;
+    Button empezarJuego, darCarta, turnoMaquina, salir, ranking;
 
 
     //Metodo para barajar
@@ -272,8 +280,63 @@ public class JuegoControlador implements Initializable {
         }
     }
 
+    private void comprobarArchivoRanking() {
+        try {
+            File archivo = new File("src/main/resources/ranking.txt");
+            if (!archivo.exists()) {
+                BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+                bw.write("NOMBRE:W:L");
+                bw.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void cargarRankings() {
+
+    }
+
+    private void cargarVentanaNombre() {
+
+        try {
+
+            NombreControlador nc = new NombreControlador();
+
+            Stage escenaModal = new Stage();
+            escenaModal.initModality(Modality.WINDOW_MODAL);
+
+            FXMLLoader fxmlLoader = new FXMLLoader(JuegoControlador.class.getResource("vistaNombre.fxml"));
+            nc.obtenerEscena(escenaModal);
+            Scene escena = new Scene(fxmlLoader.load());
+
+            escenaModal.setTitle("Iniciar sesion");
+            escenaModal.setResizable(false);
+            escenaModal.setScene(escena);
+
+            escenaModal.showAndWait();
+
+            escenaModal.setOnCloseRequest(windowEvent -> {
+                System.out.println(nc.respuesta);
+            });
+
+            System.out.println(nc.devolverRespuesta());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        comprobarArchivoRanking();
+
+        cargarVentanaNombre();
+
+        cargarRankings();
 
         empezarJuego.setOnAction(actionEvent -> {
 
@@ -324,5 +387,11 @@ public class JuegoControlador implements Initializable {
             empezarJuego.setText("Empezar");
 
         });
+
+        ranking.setOnAction(actionEvent -> {
+            System.out.println(new File("src/main/resources/ranking.txt").exists());
+        });
     }
+
+
 }

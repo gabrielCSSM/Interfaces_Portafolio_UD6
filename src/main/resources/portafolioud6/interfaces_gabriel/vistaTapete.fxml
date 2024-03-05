@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="800.0" spacing="20.0" style="-fx-background-color: darkgreen;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portafolioud6.interfaces_gabriel.JuegoControlador">
    <children>
       <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="800.0" style="-fx-background-color: black;">
@@ -26,7 +25,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER" spacing="30.0" style="-fx-background-color: MAROON; -fx-background-radius: 50;">
+            <HBox alignment="CENTER" spacing="30.0" style="-fx-background-color: #D9042B; -fx-background-radius: 50;">
                <children>
                   <Label text="La Casa:" textFill="WHITE">
                      <font>
@@ -48,14 +47,14 @@
             </HBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER" fillHeight="false" prefHeight="90.0" prefWidth="500.0" style="-fx-background-color: darkred; -fx-background-radius: 15; -fx-border-color: LIGHTSLATEGRAY; -fx-border-radius: 10; -fx-border-width: 5;">
+      <HBox alignment="CENTER" fillHeight="false" prefHeight="90.0" prefWidth="500.0" style="-fx-background-radius: 15;">
          <children>
-            <Label text="CREDITOS RESTANTES: " textFill="GOLDENROD">
+            <Label text="CREDITOS RESTANTES: " textFill="WHITE">
                <font>
                   <Font name="Bookman Old Style" size="31.0" />
                </font>
             </Label>
-            <Label fx:id="campoCreditos" alignment="CENTER" contentDisplay="CENTER" text=" 0" textAlignment="CENTER" textFill="GOLD">
+            <Label fx:id="campoCreditos" alignment="CENTER" contentDisplay="CENTER" text=" 0" textAlignment="CENTER" textFill="#f2c744">
                <font>
                   <Font name="Bookman Old Style" size="31.0" />
                </font>
@@ -64,7 +63,7 @@
       </HBox>
       <VBox>
          <children>
-            <HBox alignment="CENTER" spacing="30.0" style="-fx-background-color: MAROON; -fx-background-radius: 50;">
+            <HBox alignment="CENTER" spacing="30.0" style="-fx-background-color: #D9042B; -fx-background-radius: 50;">
                <children>
                   <Label text="Tu:" textFill="WHITE">
                      <font>
@@ -104,6 +103,11 @@
                </font>
             </Button>
             <Button fx:id="turnoMaquina" mnemonicParsing="false" text="Plantarse">
+               <font>
+                  <Font name="Berlin Sans FB" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="ranking" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" text="Ranking">
                <font>
                   <Font name="Berlin Sans FB" size="15.0" />
                </font>

@@ -7,10 +7,13 @@ import com.example.componentecarta.Carta;
 import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
 import java.util.Optional;
+import java.util.SplittableRandom;
 
 public class Jugador {
     private ArrayList<Carta> cartas = new ArrayList<>();
     private int puntos = 0;
+
+    private String nombre;
 
     void cartaObtenida(Carta carta) {
         cartas.add(carta);
@@ -65,6 +68,14 @@ public class Jugador {
 
     public int getPuntos() {
         return puntos;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }
 
