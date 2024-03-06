@@ -3,6 +3,7 @@ package portafolioud6.interfaces_gabriel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -10,39 +11,22 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NombreControlador implements Initializable {
-
-    String respuesta;
-
-    Stage esc;
-
+public class NombreControlador {
+    TratarUsuario respuesta = TratarUsuario.obtenerInstancia();
     @FXML
     TextField campoNombre;
     @FXML
     Button botonEnviar;
+    @FXML
+    void enviarRespuesta() {
 
-    void obtenerEscena(Stage s) {
-        esc =  s;
-    }
+        if (campoNombre.getText().isEmpty() || campoNombre.getText().equals(null)) {
+            respuesta.setUsuario("Guest");
+        } else {
+            respuesta.setUsuario(campoNombre.getText());
+        }
 
-    String devolverRespuesta() {
-        return respuesta;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        botonEnviar.setOnAction(actionEvent -> {
-
-            String respuesta = "";
-
-            if (campoNombre.getText().isEmpty()) {
-                respuesta = "Guest";
-            } else {
-                respuesta = campoNombre.getText();
-            }
-
-            System.exit(0);
-
-        });
+        botonEnviar.getScene().getWindow().hide();
     }
 }
+

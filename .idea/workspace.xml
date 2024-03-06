@@ -9,15 +9,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac050605-7c20-441f-a5b0-9aeb53276430" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/NombreControlador.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/RankingControlador.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/BlackjACK.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaNombre.fxml" afterDir="false" />
+    <list default="true" id="ac050605-7c20-441f-a5b0-9aeb53276430" name="Changes" comment="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign">
+      <change afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/TratarUsuario.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/JuegoControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/JuegoControlador.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/Jugador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/Jugador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/NombreControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/NombreControlador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaNombre.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaNombre.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaTapete.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaTapete.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ranking.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +124,17 @@
       <workItem from="1709625093297" duration="747000" />
       <workItem from="1709629106849" duration="98000" />
       <workItem from="1709640021782" duration="3924000" />
+      <workItem from="1709643985041" duration="55000" />
+      <workItem from="1709719241175" duration="3690000" />
     </task>
+    <task id="LOCAL-00001" summary="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign">
+      <created>1709644033676</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1709644033676</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,6 +150,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

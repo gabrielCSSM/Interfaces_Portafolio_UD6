@@ -9,17 +9,24 @@ import javafx.scene.layout.HBox;
 import com.example.componentecarta.Carta;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class JuegoControlador implements Initializable {
 
     //Declaracion de Variables
+
+    TratarUsuario respuesta = TratarUsuario.obtenerInstancia();
     int creditos = 10;
     boolean juegoEmpezado = false;
     Baraja miBaraja = new Baraja();
@@ -27,11 +34,15 @@ public class JuegoControlador implements Initializable {
     Jugador jugador = new Jugador();
     ArrayList<Carta> barajaJugador = jugador.getCartas();
     ArrayList<Carta> barajaMaquina = maquina.getCartas();
+
+    int victorias = jugador.getVictorias();
+
+    int derrotas = jugador.getDerrotas();
     int cartasDescubiertas = 0;
     @FXML
     HBox mesaJugador, mesaMaquina;
     @FXML
-    Label campoPuntosMaquina, campoPuntosJugador, campoCreditos;
+    Label campoPuntosMaquina, campoPuntosJugador, campoCreditos, labelNombre;
     @FXML
     Button empezarJuego, darCarta, turnoMaquina, salir, ranking;
 
@@ -200,6 +211,7 @@ public class JuegoControlador implements Initializable {
             hacerAlerta("tablas");
         } else if (jugador == 21) {
             hacerAlerta("Jugador");
+
         } else if (maquina == 21) {
             hacerAlerta("Maquina");
         } else if (jugador > 21) {
@@ -236,8 +248,10 @@ public class JuegoControlador implements Initializable {
         } else {
             if (nombre.equalsIgnoreCase("Jugador")) {
                 creditos += 1;
+                victorias++;
             } else {
                 creditos -= 1;
+                derrotas++;
             }
             alerta.setTitle(nombre + " ha ganado!");
             alerta.setHeaderText("Felicidades " + nombre + ", por su victoria");
@@ -294,9 +308,7 @@ public class JuegoControlador implements Initializable {
 
     }
 
-    private void cargarRankings() {
 
-    }
 
     private void cargarVentanaNombre() {
 
@@ -308,24 +320,47 @@ public class JuegoControlador implements Initializable {
             escenaModal.initModality(Modality.WINDOW_MODAL);
 
             FXMLLoader fxmlLoader = new FXMLLoader(JuegoControlador.class.getResource("vistaNombre.fxml"));
-            nc.obtenerEscena(escenaModal);
+            fxmlLoader.setController(nc);
             Scene escena = new Scene(fxmlLoader.load());
 
             escenaModal.setTitle("Iniciar sesion");
+            escenaModal.initStyle(StageStyle.UNDECORATED);
             escenaModal.setResizable(false);
             escenaModal.setScene(escena);
 
             escenaModal.showAndWait();
 
-            escenaModal.setOnCloseRequest(windowEvent -> {
-                System.out.println(nc.respuesta);
-            });
 
-            System.out.println(nc.devolverRespuesta());
+
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void establecerNombre() {
+        jugador.setNombre(respuesta.getUsuario());
+        labelNombre.setText(jugador.getNombre() + ":");
+    }
+
+    private void escribirRanking(Jugador j) {
+        try {
+            File archivo = new File("src/main/resources/ranking.txt");
+            if (archivo.exists()) {
+                String cadena = "\n"
+                        + j.getNombre() + ":"
+                        + jugador.getVictorias() + ":"
+                        + jugador.getDerrotas();
+
+                Files.write(Path.of(archivo.getAbsolutePath()), cadena.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void cargarRankings() {
+
     }
 
 
@@ -336,7 +371,7 @@ public class JuegoControlador implements Initializable {
 
         cargarVentanaNombre();
 
-        cargarRankings();
+        establecerNombre();
 
         empezarJuego.setOnAction(actionEvent -> {
 
@@ -385,6 +420,10 @@ public class JuegoControlador implements Initializable {
             barajar();
             juegoEmpezado = false;
             empezarJuego.setText("Empezar");
+
+            jugador.setVictorias(victorias);
+            jugador.setDerrotas(derrotas);
+            escribirRanking(jugador);
 
         });
 

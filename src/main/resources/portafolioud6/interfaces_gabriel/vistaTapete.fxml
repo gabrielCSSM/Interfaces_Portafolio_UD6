@@ -7,7 +7,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="800.0" spacing="20.0" style="-fx-background-color: darkgreen;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portafolioud6.interfaces_gabriel.JuegoControlador">
+<VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="800.0" spacing="20.0"
+style="-fx-background-color: darkgreen;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="portafolioud6.interfaces_gabriel.JuegoControlador">
    <children>
       <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="800.0" style="-fx-background-color: black;">
          <children>
@@ -65,7 +67,7 @@
          <children>
             <HBox alignment="CENTER" spacing="30.0" style="-fx-background-color: #D9042B; -fx-background-radius: 50;">
                <children>
-                  <Label text="Tu:" textFill="WHITE">
+                  <Label text="Tu:" textFill="WHITE" fx:id="labelNombre">
                      <font>
                         <Font name="Broadway" size="31.0" />
                      </font>

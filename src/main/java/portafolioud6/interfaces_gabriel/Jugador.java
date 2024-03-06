@@ -13,6 +13,9 @@ public class Jugador {
     private ArrayList<Carta> cartas = new ArrayList<>();
     private int puntos = 0;
 
+    private int victorias = 0;
+    private int derrotas = 0;
+
     private String nombre;
 
     void cartaObtenida(Carta carta) {
@@ -76,6 +79,22 @@ public class Jugador {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public int getVictorias() {
+        return victorias;
+    }
+
+    public void setVictorias(int victorias) {
+        this.victorias = victorias;
+    }
+
+    public int getDerrotas() {
+        return derrotas;
+    }
+
+    public void setDerrotas(int derrotas) {
+        this.derrotas = derrotas;
     }
 }
 
