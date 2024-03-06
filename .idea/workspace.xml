@@ -9,15 +9,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac050605-7c20-441f-a5b0-9aeb53276430" name="Changes" comment="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign">
-      <change afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/TratarUsuario.java" afterDir="false" />
+    <list default="true" id="ac050605-7c20-441f-a5b0-9aeb53276430" name="Changes" comment="Commit de Final de Clase //&#10;Nombre de Jugador Hecho //&#10;Ranking almacenados, pendiente de hacer interfaz">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaRanking.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/PortafolioUD6_Interfaces_Gabriel_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/PortafolioUD6_Interfaces_Gabriel_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/PortafolioUD6_Interfaces_Gabriel_jar/PortafolioUD6_Interfaces_Gabriel.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/JuegoControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/JuegoControlador.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/Jugador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/Jugador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/NombreControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/NombreControlador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaNombre.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaNombre.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaTapete.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaTapete.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ranking.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/RankingControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/RankingControlador.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,18 +44,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;G:/Mi unidad/CS_2DAM_Gabriel_Drive/Programacion_de_Servicios_y_Procesos/Intento2/componenteCarta/target/componenteCarta-1.0-SNAPSHOT.jar&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.39425287&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "G:/Mi unidad/CS_2DAM_Gabriel_Drive/Programacion_de_Servicios_y_Procesos/Intento2/componenteCarta/target/componenteCarta-1.0-SNAPSHOT.jar",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.39425287",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="G:\Mi unidad\CS_2DAM_Gabriel_Drive\Desenvolvemento_de_Interfaces\Proyectos\Portafolio UD6\PortafolioUD6_Interfaces_Gabriel\src\main\resources\portafolioud6\interfaces_gabriel" />
@@ -101,9 +102,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PortafolioUD6_Interfaces_Gabriel.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/PortafolioUD6_Interfaces_Gabriel_jar/PortafolioUD6_Interfaces_Gabriel.jar" />
+      <method v="2" />
+    </configuration>
+    <configuration name="interfaces_gabriel-1.0-SNAPSHOT.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/target/interfaces_gabriel-1.0-SNAPSHOT.jar" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Launcher" />
+        <item itemvalue="JAR Application.PortafolioUD6_Interfaces_Gabriel.jar" />
+        <item itemvalue="JAR Application.interfaces_gabriel-1.0-SNAPSHOT.jar" />
         <item itemvalue="Application.HelloApplication" />
         <item itemvalue="Application.Carta" />
       </list>
@@ -125,7 +136,10 @@
       <workItem from="1709629106849" duration="98000" />
       <workItem from="1709640021782" duration="3924000" />
       <workItem from="1709643985041" duration="55000" />
-      <workItem from="1709719241175" duration="3690000" />
+      <workItem from="1709719241175" duration="4006000" />
+      <workItem from="1709724875759" duration="7000" />
+      <workItem from="1709728205788" duration="145000" />
+      <workItem from="1709734777772" duration="7217000" />
     </task>
     <task id="LOCAL-00001" summary="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign">
       <created>1709644033676</created>
@@ -134,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1709644033676</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Commit de Final de Clase //&#10;Nombre de Jugador Hecho //&#10;Ranking almacenados, pendiente de hacer interfaz">
+      <created>1709723674163</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1709723674163</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,7 +174,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign" />
+    <MESSAGE value="Commit de Final de Clase //&#10;Nombre de Jugador Hecho //&#10;Ranking almacenados, pendiente de hacer interfaz" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit de Final de Clase //&#10;Nombre de Jugador Hecho //&#10;Ranking almacenados, pendiente de hacer interfaz" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

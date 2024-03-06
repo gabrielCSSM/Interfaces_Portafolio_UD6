@@ -4,19 +4,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import com.example.componentecarta.Carta;
+
 import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
 import java.util.Optional;
 import java.util.SplittableRandom;
 
 public class Jugador {
+    private String nombre;
+    private int victorias = 0;
+    private int derrotas = 0;
     private ArrayList<Carta> cartas = new ArrayList<>();
     private int puntos = 0;
 
-    private int victorias = 0;
-    private int derrotas = 0;
-
-    private String nombre;
 
     void cartaObtenida(Carta carta) {
         cartas.add(carta);

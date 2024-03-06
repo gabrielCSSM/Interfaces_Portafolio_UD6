@@ -3,6 +3,7 @@ package portafolioud6.interfaces_gabriel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -11,15 +12,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.channels.Pipe;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileAttribute;
 import java.util.*;
 
 public class JuegoControlador implements Initializable {
@@ -27,6 +29,7 @@ public class JuegoControlador implements Initializable {
     //Declaracion de Variables
 
     TratarUsuario respuesta = TratarUsuario.obtenerInstancia();
+    private Path ruta = Path.of("src/main/resources/portafolioud6/interfaces_gabriel/ranking.txt");
     int creditos = 10;
     boolean juegoEmpezado = false;
     Baraja miBaraja = new Baraja();
@@ -163,8 +166,8 @@ public class JuegoControlador implements Initializable {
 
     //Comenzar un Juego Barajando
     void comenzar() {
-        sinCreditos();
         barajar();
+        sinCreditos();
         mostrarManoInicial();
     }
 
@@ -211,7 +214,6 @@ public class JuegoControlador implements Initializable {
             hacerAlerta("tablas");
         } else if (jugador == 21) {
             hacerAlerta("Jugador");
-
         } else if (maquina == 21) {
             hacerAlerta("Maquina");
         } else if (jugador > 21) {
@@ -296,18 +298,20 @@ public class JuegoControlador implements Initializable {
 
     private void comprobarArchivoRanking() {
         try {
-            File archivo = new File("src/main/resources/ranking.txt");
+            //Intentar pillar el archivo
+            //Si no existe, lo crea
+
+            String formato = "NAME:W:L";
+            File archivo = new File(String.valueOf(ruta));
+
             if (!archivo.exists()) {
-                BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
-                bw.write("NOMBRE:W:L");
-                bw.close();
+                archivo.createNewFile();
+                Files.write(archivo.toPath(), Collections.singleton(formato), StandardCharsets.UTF_8);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
-
 
 
     private void cargarVentanaNombre() {
@@ -331,8 +335,6 @@ public class JuegoControlador implements Initializable {
             escenaModal.showAndWait();
 
 
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -345,22 +347,73 @@ public class JuegoControlador implements Initializable {
 
     private void escribirRanking(Jugador j) {
         try {
-            File archivo = new File("src/main/resources/ranking.txt");
+            File archivo = new File(String.valueOf(ruta));
             if (archivo.exists()) {
-                String cadena = "\n"
-                        + j.getNombre() + ":"
-                        + jugador.getVictorias() + ":"
-                        + jugador.getDerrotas();
+                String cadena =
+                        j.getNombre() + ":"
+                                + jugador.getVictorias() + ":"
+                                + jugador.getDerrotas();
 
-                Files.write(Path.of(archivo.getAbsolutePath()), cadena.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
-
+                Files.write(ruta, cadena.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    private void cargarRankings() {
 
+    private void cargarRankings() {
+        TratarPuntuaciones envio = TratarPuntuaciones.obtenerInstancia();
+
+        try {
+
+            ArrayList<Jugador> jugadores = new ArrayList<>();
+
+            BufferedReader br = new BufferedReader(new FileReader(new File(String.valueOf(ruta))));
+
+            String linea = "";
+            br.readLine();
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(":");
+                Jugador j = new Jugador();
+                j.setNombre(datos[0]);
+                j.setVictorias(Integer.parseInt(datos[1]));
+                j.setDerrotas(Integer.parseInt(datos[2]));
+                jugadores.add(j);
+            }
+
+            envio.setJugadores(jugadores);
+
+            cargarVentanaRankings();
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void cargarVentanaRankings() {
+        try {
+            RankingControlador rc = new RankingControlador();
+
+            Stage escenaModal = new Stage();
+            escenaModal.initModality(Modality.WINDOW_MODAL);
+
+            FXMLLoader fxmlLoader = new FXMLLoader(JuegoControlador.class.getResource("vistaRanking.fxml"));
+            fxmlLoader.setController(rc);
+
+            Scene escena = new Scene(fxmlLoader.load());
+
+            escenaModal.initStyle(StageStyle.UNDECORATED);
+            escenaModal.setResizable(false);
+            escenaModal.setScene(escena);
+
+            escenaModal.showAndWait();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -374,14 +427,11 @@ public class JuegoControlador implements Initializable {
         establecerNombre();
 
         empezarJuego.setOnAction(actionEvent -> {
-
             if (juegoEmpezado == false) {
                 creditos = 10;
             }
 
             comenzar();
-
-            juegoEmpezado = true;
 
             if (juegoEmpezado) {
                 empezarJuego.setText("Reiniciar");
@@ -428,7 +478,7 @@ public class JuegoControlador implements Initializable {
         });
 
         ranking.setOnAction(actionEvent -> {
-            System.out.println(new File("src/main/resources/ranking.txt").exists());
+            cargarRankings();
         });
     }
 
