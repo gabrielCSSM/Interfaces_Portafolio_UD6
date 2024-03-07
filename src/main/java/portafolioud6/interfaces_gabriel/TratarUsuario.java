@@ -1,6 +1,6 @@
 package portafolioud6.interfaces_gabriel;
 
-public final class TratarUsuario {
+public class TratarUsuario {
 
     private String usuario;
 

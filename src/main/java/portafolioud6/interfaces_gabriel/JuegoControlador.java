@@ -1,11 +1,13 @@
 package portafolioud6.interfaces_gabriel;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import com.example.componentecarta.Carta;
 import javafx.stage.Modality;
@@ -13,33 +15,28 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.channels.Pipe;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileAttribute;
 import java.util.*;
 
 public class JuegoControlador implements Initializable {
 
     //Declaracion de Variables
-
     TratarUsuario respuesta = TratarUsuario.obtenerInstancia();
+    TratarPuntuaciones envio = TratarPuntuaciones.obtenerInstancia();
     private Path ruta = Path.of("src/main/resources/portafolioud6/interfaces_gabriel/ranking.txt");
     int creditos = 10;
     boolean juegoEmpezado = false;
+    boolean esbj = false;
     Baraja miBaraja = new Baraja();
     Maquina maquina = new Maquina();
     Jugador jugador = new Jugador();
     ArrayList<Carta> barajaJugador = jugador.getCartas();
     ArrayList<Carta> barajaMaquina = maquina.getCartas();
-
     int victorias = jugador.getVictorias();
-
     int derrotas = jugador.getDerrotas();
     int cartasDescubiertas = 0;
     @FXML
@@ -249,7 +246,11 @@ public class JuegoControlador implements Initializable {
 
         } else {
             if (nombre.equalsIgnoreCase("Jugador")) {
-                creditos += 1;
+                if (esbj == true) {
+                    creditos += 2;
+                } else {
+                    creditos += 1;
+                }
                 victorias++;
             } else {
                 creditos -= 1;
@@ -262,7 +263,7 @@ public class JuegoControlador implements Initializable {
 
         alerta.setOnCloseRequest(dialogEvent -> {
             comenzar();
-            empezarJuego.setText("Reiniciar el Juego");
+            empezarJuego.setText("Reiniciar");
         });
 
         alerta.showAndWait();
@@ -279,17 +280,20 @@ public class JuegoControlador implements Initializable {
     void esBlackJack() {
         if (jugador.getPuntos() == 21) {
             hacerAlerta("Jugador");
+            esbj = true;
+        } else {
+            esbj = false;
         }
     }
 
     //Metodo para comprobar que la maquina robe hasta un valor de cartas minimo de 17
-    boolean comprobar17(int suma) {
+    boolean compararaConJugador(int suma) {
 
         for (Carta c : maquina.getCartas()) {
             suma += c.devolverCarta().getValor();
         }
 
-        if (suma >= 17) {
+        if (suma >= jugador.getPuntos()) {
             return true;
         } else {
             return false;
@@ -350,7 +354,7 @@ public class JuegoControlador implements Initializable {
             File archivo = new File(String.valueOf(ruta));
             if (archivo.exists()) {
                 String cadena =
-                        j.getNombre() + ":"
+                        "\n" + j.getNombre() + ":"
                                 + jugador.getVictorias() + ":"
                                 + jugador.getDerrotas();
 
@@ -362,23 +366,24 @@ public class JuegoControlador implements Initializable {
     }
 
     private void cargarRankings() {
-        TratarPuntuaciones envio = TratarPuntuaciones.obtenerInstancia();
 
         try {
 
-            ArrayList<Jugador> jugadores = new ArrayList<>();
+            List<Jugador> jugadores = new ArrayList<>();
 
             BufferedReader br = new BufferedReader(new FileReader(new File(String.valueOf(ruta))));
 
             String linea = "";
             br.readLine();
             while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(":");
-                Jugador j = new Jugador();
-                j.setNombre(datos[0]);
-                j.setVictorias(Integer.parseInt(datos[1]));
-                j.setDerrotas(Integer.parseInt(datos[2]));
-                jugadores.add(j);
+                if (!linea.isEmpty()) {
+                    String[] datos = linea.split(":");
+                    Jugador j = new Jugador();
+                    j.setNombre(datos[0]);
+                    j.setVictorias(Integer.parseInt(datos[1]));
+                    j.setDerrotas(Integer.parseInt(datos[2]));
+                    jugadores.add(j);
+                }
             }
 
             envio.setJugadores(jugadores);
@@ -395,15 +400,30 @@ public class JuegoControlador implements Initializable {
 
     private void cargarVentanaRankings() {
         try {
-            RankingControlador rc = new RankingControlador();
-
+            ObservableList<Jugador> lista = FXCollections.observableArrayList();
             Stage escenaModal = new Stage();
+
             escenaModal.initModality(Modality.WINDOW_MODAL);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(JuegoControlador.class.getResource("vistaRanking.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(RankingControlador.class.getResource("vistaRanking.fxml"));
+            RankingControlador rc = new RankingControlador();
             fxmlLoader.setController(rc);
-
             Scene escena = new Scene(fxmlLoader.load());
+
+            rc.colJugador.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            rc.colVictorias.setCellValueFactory(new PropertyValueFactory<>("victorias"));
+            rc.colDerrotas.setCellValueFactory(new PropertyValueFactory<>("derrotas"));
+
+            for (Jugador j : envio.getJugadores()) {
+                lista.add(j);
+            }
+
+            rc.tablaRanking.getItems().clear();
+            rc.tablaRanking.setItems(lista);
+            rc.botonSalir.setOnAction(actionEvent -> {
+                rc.botonSalir.getScene().getWindow().hide();
+            });
+
 
             escenaModal.initStyle(StageStyle.UNDECORATED);
             escenaModal.setResizable(false);
@@ -433,6 +453,8 @@ public class JuegoControlador implements Initializable {
 
             comenzar();
 
+            juegoEmpezado = true;
+
             if (juegoEmpezado) {
                 empezarJuego.setText("Reiniciar");
             }
@@ -451,16 +473,23 @@ public class JuegoControlador implements Initializable {
 
         turnoMaquina.setOnAction(actionEvent -> {
             //Se revelan tanto las cartas ocultadas como las puntuaciones de la maquina
-            int suma = 0;
+            if (juegoEmpezado == true) {
 
-            while (!comprobar17(suma)) {
-                accionMaquina(false);
+                int suma = 0;
+
+                while (!compararaConJugador(suma)) {
+                    accionMaquina(false);
+                }
+
+                revelarMano();
+
+                mensajeDeVictoria();
+            } else {
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                alerta.setTitle("El Juego no ha sigo EMPEZADO");
+                alerta.setHeaderText("Por favor, inicia el juego");
+                alerta.showAndWait();
             }
-
-            revelarMano();
-
-            mensajeDeVictoria();
-
         });
 
         salir.setOnAction(actionEvent -> {
