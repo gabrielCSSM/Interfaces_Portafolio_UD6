@@ -12,10 +12,16 @@ import java.util.SplittableRandom;
 
 public class Jugador {
     private String nombre;
-    private int victorias = 0;
-    private int derrotas = 0;
+    private int victorias;
+    private int derrotas;
     private ArrayList<Carta> cartas = new ArrayList<>();
-    private int puntos = 0;
+    private int puntos;
+
+    public Jugador() {
+        this.derrotas = 0;
+        this.victorias = 0;
+        this.puntos = 0;
+    }
 
 
     void cartaObtenida(Carta carta) {
