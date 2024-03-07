@@ -9,15 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac050605-7c20-441f-a5b0-9aeb53276430" name="Changes" comment="Commit de Final de Clase //&#10;Nuevas Clases">
-      <change afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/TratarPuntuaciones.java" afterDir="false" />
+    <list default="true" id="ac050605-7c20-441f-a5b0-9aeb53276430" name="Changes" comment="Jugador Modificado">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/JuegoControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/JuegoControlador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/Jugador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/Jugador.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/RankingControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/RankingControlador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/TratarUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/TratarUsuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaNombre.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaNombre.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaRanking.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaRanking.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaTapete.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaTapete.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +60,7 @@
       <recent name="G:\Mi unidad\CS_2DAM_Gabriel_Drive\Desenvolvemento_de_Interfaces\Proyectos\Portafolio UD6\PortafolioUD6_Interfaces_Gabriel\src\main\resources\portafolioud6\interfaces_gabriel" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Launcher">
+  <component name="RunManager" selected="JAR Application.PortafolioUD6_Interfaces_Gabriel.jar">
     <configuration name="Carta" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="portafolioud6.interfaces_gabriel.Carta" />
       <module name="PortafolioUD6_Interfaces_Gabriel" />
@@ -113,8 +110,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Launcher" />
         <item itemvalue="JAR Application.PortafolioUD6_Interfaces_Gabriel.jar" />
+        <item itemvalue="Application.Launcher" />
         <item itemvalue="JAR Application.interfaces_gabriel-1.0-SNAPSHOT.jar" />
         <item itemvalue="Application.HelloApplication" />
         <item itemvalue="Application.Carta" />
@@ -141,7 +138,7 @@
       <workItem from="1709724875759" duration="7000" />
       <workItem from="1709728205788" duration="145000" />
       <workItem from="1709734777772" duration="7347000" />
-      <workItem from="1709799866775" duration="9094000" />
+      <workItem from="1709799866775" duration="11714000" />
     </task>
     <task id="LOCAL-00001" summary="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign">
       <created>1709644033676</created>
@@ -171,7 +168,21 @@
       <option name="project" value="LOCAL" />
       <updated>1709742177928</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Interfaz de los ranking hecha">
+      <created>1709809491448</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1709809491448</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Jugador Modificado">
+      <created>1709809507321</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1709809507321</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,7 +204,9 @@
     <MESSAGE value="Commit de Final de Clase //&#10;Nombre de Jugador Hecho //&#10;Ranking almacenados, pendiente de hacer interfaz" />
     <MESSAGE value="Commit de Final de Clase //&#10;Ranking almacenados, pendiente de hacer interfaz" />
     <MESSAGE value="Commit de Final de Clase //&#10;Nuevas Clases" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit de Final de Clase //&#10;Nuevas Clases" />
+    <MESSAGE value="Interfaz de los ranking hecha" />
+    <MESSAGE value="Jugador Modificado" />
+    <option name="LAST_COMMIT_MESSAGE" value="Jugador Modificado" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -202,11 +215,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/HelloController.java</url>
           <line>92</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/JuegoControlador.java</url>
-          <line>412</line>
-          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

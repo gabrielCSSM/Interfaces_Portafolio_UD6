@@ -409,7 +409,6 @@ public class JuegoControlador implements Initializable {
             RankingControlador rc = new RankingControlador();
             fxmlLoader.setController(rc);
             Scene escena = new Scene(fxmlLoader.load());
-
             rc.colJugador.setCellValueFactory(new PropertyValueFactory<>("nombre"));
             rc.colVictorias.setCellValueFactory(new PropertyValueFactory<>("victorias"));
             rc.colDerrotas.setCellValueFactory(new PropertyValueFactory<>("derrotas"));

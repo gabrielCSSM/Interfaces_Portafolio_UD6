@@ -114,7 +114,7 @@ fx:controller="portafolioud6.interfaces_gabriel.JuegoControlador">
                   <Font name="Berlin Sans FB" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="salir" mnemonicParsing="false" text="Salir">
+            <Button fx:id="salir" mnemonicParsing="false" text="Salir Partida">
                <font>
                   <Font name="Berlin Sans FB" size="15.0" />
                </font>
