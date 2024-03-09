@@ -493,17 +493,23 @@ public class JuegoControlador implements Initializable {
         });
 
         salir.setOnAction(actionEvent -> {
+            if (juegoEmpezado) {
 
-            creditos = 10;
-            campoCreditos.setText("10");
-            barajar();
-            juegoEmpezado = false;
-            empezarJuego.setText("Empezar");
+                creditos = 10;
+                campoCreditos.setText("10");
+                barajar();
+                juegoEmpezado = false;
+                empezarJuego.setText("Empezar");
 
-            jugador.setVictorias(victorias);
-            jugador.setDerrotas(derrotas);
-            escribirRanking(jugador);
-
+                jugador.setVictorias(victorias);
+                jugador.setDerrotas(derrotas);
+                escribirRanking(jugador);
+            } else {
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                alerta.setTitle("El Juego no ha sigo EMPEZADO");
+                alerta.setHeaderText("Por favor, inicia el juego");
+                alerta.showAndWait();
+            }
         });
 
         ranking.setOnAction(actionEvent -> {
