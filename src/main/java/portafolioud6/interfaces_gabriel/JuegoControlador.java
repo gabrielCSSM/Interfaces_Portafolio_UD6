@@ -169,6 +169,7 @@ public class JuegoControlador implements Initializable {
         mostrarManoInicial();
     }
 
+    //Acciones al empezar la partida
     void mostrarManoInicial() {
         //Repartir 2 cartas al jugador
         accionJugador();
@@ -183,6 +184,7 @@ public class JuegoControlador implements Initializable {
         comprobarPuntos();
     }
 
+    //Se comprueban los puntos por si se pasan de 21
     void comprobarPuntos() {
         if (jugador.getPuntos() > 21) {
             hacerAlerta("Maquina");
@@ -301,23 +303,23 @@ public class JuegoControlador implements Initializable {
         }
     }
 
+    //Metodo que comprueba que el archivo de los rankings
     private void comprobarArchivoRanking() {
         try {
             //Intentar pillar el archivo
             //Si no existe, lo crea
-
             String formato = "NAME:W:L";
             if (!archivoRankings.exists()) {
-                    if (archivoRankings.createNewFile()) {
-                        Files.write(archivoRankings.toPath(), Collections.singleton(formato), StandardCharsets.UTF_8);
-                    }
+                if (archivoRankings.createNewFile()) {
+                    Files.write(archivoRankings.toPath(), Collections.singleton(formato), StandardCharsets.UTF_8);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
+    //Carga la ventana del login
     private void cargarVentanaNombre() {
 
         try {
@@ -343,12 +345,12 @@ public class JuegoControlador implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
+    //Pilla el usuario del login y lo establece como TU nombre
     private void establecerNombre() {
         jugador.setNombre(respuesta.getUsuario());
         labelNombre.setText(jugador.getNombre() + ":");
     }
-
+    //Al acabar la partida se pillan el nombre y las victorias/derrotas, las escribe en el archivo de los rankings
     private void escribirRanking(Jugador j) {
         try {
             if (archivoRankings.exists()) {
@@ -363,7 +365,7 @@ public class JuegoControlador implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
+    //Carga la ventana de los rankings
     private void cargarRankings() {
 
         try {
@@ -508,6 +510,4 @@ public class JuegoControlador implements Initializable {
             cargarRankings();
         });
     }
-
-
 }
