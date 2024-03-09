@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileAttribute;
 import java.util.*;
 
 public class JuegoControlador implements Initializable {
@@ -27,7 +28,7 @@ public class JuegoControlador implements Initializable {
     //Declaracion de Variables
     TratarUsuario respuesta = TratarUsuario.obtenerInstancia();
     TratarPuntuaciones envio = TratarPuntuaciones.obtenerInstancia();
-    private Path ruta = Path.of("src/main/resources/portafolioud6/interfaces_gabriel/ranking.txt");
+    private File archivoRankings = new File("PortafolioUD6_Interfaces_Gabriel/src/main/resources/portafolioud6/interfaces_gabriel/rankings.txt");
     int creditos = 10;
     boolean juegoEmpezado = false;
     boolean esbj = false;
@@ -306,11 +307,10 @@ public class JuegoControlador implements Initializable {
             //Si no existe, lo crea
 
             String formato = "NAME:W:L";
-            File archivo = new File(String.valueOf(ruta));
-
-            if (!archivo.exists()) {
-                archivo.createNewFile();
-                Files.write(archivo.toPath(), Collections.singleton(formato), StandardCharsets.UTF_8);
+            if (!archivoRankings.exists()) {
+                    if (archivoRankings.createNewFile()) {
+                        Files.write(archivoRankings.toPath(), Collections.singleton(formato), StandardCharsets.UTF_8);
+                    }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -351,14 +351,13 @@ public class JuegoControlador implements Initializable {
 
     private void escribirRanking(Jugador j) {
         try {
-            File archivo = new File(String.valueOf(ruta));
-            if (archivo.exists()) {
+            if (archivoRankings.exists()) {
                 String cadena =
                         "\n" + j.getNombre() + ":"
                                 + jugador.getVictorias() + ":"
                                 + jugador.getDerrotas();
 
-                Files.write(ruta, cadena.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+                Files.write(archivoRankings.toPath(), cadena.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -371,7 +370,7 @@ public class JuegoControlador implements Initializable {
 
             List<Jugador> jugadores = new ArrayList<>();
 
-            BufferedReader br = new BufferedReader(new FileReader(new File(String.valueOf(ruta))));
+            BufferedReader br = new BufferedReader(new FileReader(archivoRankings));
 
             String linea = "";
             br.readLine();

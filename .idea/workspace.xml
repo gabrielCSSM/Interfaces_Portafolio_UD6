@@ -9,12 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac050605-7c20-441f-a5b0-9aeb53276430" name="Changes" comment="Jugador Modificado">
+    <list default="true" id="ac050605-7c20-441f-a5b0-9aeb53276430" name="Changes" comment="Version 1.3 - Estable">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/JuegoControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/JuegoControlador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/RankingControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/portafolioud6/interfaces_gabriel/RankingControlador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaRanking.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaRanking.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaTapete.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/vistaTapete.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/ranking.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/portafolioud6/interfaces_gabriel/ranking.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +57,7 @@
       <recent name="G:\Mi unidad\CS_2DAM_Gabriel_Drive\Desenvolvemento_de_Interfaces\Proyectos\Portafolio UD6\PortafolioUD6_Interfaces_Gabriel\src\main\resources\portafolioud6\interfaces_gabriel" />
     </key>
   </component>
-  <component name="RunManager" selected="JAR Application.PortafolioUD6_Interfaces_Gabriel.jar">
+  <component name="RunManager" selected="Application.Launcher">
     <configuration name="Carta" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="portafolioud6.interfaces_gabriel.Carta" />
       <module name="PortafolioUD6_Interfaces_Gabriel" />
@@ -110,8 +107,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JAR Application.PortafolioUD6_Interfaces_Gabriel.jar" />
         <item itemvalue="Application.Launcher" />
+        <item itemvalue="JAR Application.PortafolioUD6_Interfaces_Gabriel.jar" />
         <item itemvalue="JAR Application.interfaces_gabriel-1.0-SNAPSHOT.jar" />
         <item itemvalue="Application.HelloApplication" />
         <item itemvalue="Application.Carta" />
@@ -138,7 +135,7 @@
       <workItem from="1709724875759" duration="7000" />
       <workItem from="1709728205788" duration="145000" />
       <workItem from="1709734777772" duration="7347000" />
-      <workItem from="1709799866775" duration="11714000" />
+      <workItem from="1709799866775" duration="12499000" />
     </task>
     <task id="LOCAL-00001" summary="Commit de Final de Clase //&#10;Pendiente de hacer el nombre del jugador //&#10;Pendiente de hacer los rankign">
       <created>1709644033676</created>
@@ -182,7 +179,14 @@
       <option name="project" value="LOCAL" />
       <updated>1709809507321</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Version 1.3 - Estable">
+      <created>1709815451104</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1709815451104</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,7 +210,8 @@
     <MESSAGE value="Commit de Final de Clase //&#10;Nuevas Clases" />
     <MESSAGE value="Interfaz de los ranking hecha" />
     <MESSAGE value="Jugador Modificado" />
-    <option name="LAST_COMMIT_MESSAGE" value="Jugador Modificado" />
+    <MESSAGE value="Version 1.3 - Estable" />
+    <option name="LAST_COMMIT_MESSAGE" value="Version 1.3 - Estable" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
